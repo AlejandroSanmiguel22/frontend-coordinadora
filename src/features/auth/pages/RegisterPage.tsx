@@ -11,7 +11,8 @@ import { ReactComponent as LockIcon } from '../../../assets/lock.svg';
 import { useState } from 'react';
 import { ReactComponent as EyeSvg } from '../../../assets/eye.svg';
 import { ReactComponent as EyeSlashSvg } from '../../../assets/eye-closed.svg';
-
+import { registerUser } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,17 +23,29 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (password !== confirm) {
       alert('Las contraseñas no coinciden');
       return;
     }
 
-    console.log({ username, email, password });
+    try {
+      const result = await registerUser({
+        username, email, password,
+        userName: username,
+      });
+      alert('Usuario registrado con éxito');
+      console.log(result);
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
-
+  
   return (
     <div className="relative min-h-screen bg-[#0057C8] flex items-center justify-center overflow-hidden">
       {/* Burbujas decorativas */}

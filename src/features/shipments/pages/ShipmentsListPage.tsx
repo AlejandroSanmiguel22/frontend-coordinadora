@@ -3,8 +3,9 @@ import AuthLayout from '../../auth/components/AuthLayout';
 import ShipmentFormTitle from '../components/ShipmentFormTitle';
 import { getMyShipments } from '../services/shipmentService';
 import { Link } from 'react-router-dom';
-import logo from '../../../assets/logo.png'; 
+import logo from '../../../assets/logo.png';
 import ShipmentLayout from '../components/ShipmentLayout';
+import { useNavigate } from 'react-router-dom';
 
 interface Shipment {
   id: number;
@@ -18,6 +19,13 @@ interface Shipment {
 
 const ShipmentsListPage = () => {
   const [shipments, setShipments] = useState<Shipment[]>([]);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/login');
+  };
 
   useEffect(() => {
     const fetchShipments = async () => {
@@ -34,7 +42,15 @@ const ShipmentsListPage = () => {
 
   return (
     <ShipmentLayout>
-      <div className="w-full max-w-6xl mx-auto px-1 flex flex-col gap-6">
+      {/* Botón de cerrar sesión fijo en la esquina superior derecha */}
+      <button
+        onClick={handleLogout}
+        className="fixed top-4 right-4 px-4 py-2 border border-white text-white rounded-lg hover:bg-white hover:text-[#0057C8] transition z-50"
+      >
+        Cerrar sesión
+      </button>
+
+      <div className="w-full max-w-6xl mx-auto px-1 flex flex-col gap-6 pt-12">
         <ShipmentFormTitle
           title="Mis envíos"
           subtitle="Consulta el historial de tus órdenes registradas"
@@ -77,10 +93,10 @@ const ShipmentsListPage = () => {
         </div>
       </div>
       <div className="absolute -bottom-40 left-1/2 transform -translate-x-1/2 w-full">
-          <div className="bg-white w-48 h-28 rounded-t-full flex justify-center items-end pb-3 shadow-md mx-auto">
-            <img src={logo} alt="Logo Coordinadora" className="w-45 translate-x-[-10px]" />
-          </div>
+        <div className="bg-white w-48 h-28 rounded-t-full flex justify-center items-end pb-3 shadow-md mx-auto">
+          <img src={logo} alt="Logo Coordinadora" className="w-45 translate-x-[-10px]" />
         </div>
+      </div>
     </ShipmentLayout>
   );
 };

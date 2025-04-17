@@ -8,16 +8,36 @@ import topSvg from '../../../assets/Ellipse-top.svg';
 import logo from '../../../assets/logo.png';
 import { ReactComponent as UserIcon } from '../../../assets/user.svg';
 import { ReactComponent as LockIcon } from '../../../assets/lock.svg';
+import { loginUser } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { ReactComponent as EyeSvg } from '../../../assets/eye.svg';
+import { ReactComponent as EyeSlashSvg } from '../../../assets/eye-closed.svg';
+
 
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({ email, password });
+
+        try {
+            const { token, role } = await loginUser({ email, password });
+
+            localStorage.setItem('token', token);
+            localStorage.setItem('role', role);
+
+            alert('Inicio de sesión exitoso');
+            navigate('/users/profile');
+        } catch (error: any) {
+            alert(error.message);
+        }
     };
+
 
     return (
         <div className="relative min-h-screen bg-[#0057C8] flex items-center justify-center overflow-hidden">
@@ -61,12 +81,15 @@ const LoginPage = () => {
 
                 <Input
                     label="Contraseña"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    icon={<LockIcon className="w-5 h-5" style={{ color: '#005DB3' }} />}
+                    icon={<LockIcon className="w-5 h-5 text-[#005DB3]" />}
+                    rightIcon={showPassword ? <EyeSlashSvg className="w-5 h-5 text-[#005DB3]" /> : <EyeSvg className="w-5 h-5 text-[#005DB3]" />}
+                    onRightIconClick={() => setShowPassword((prev) => !prev)}
                 />
+
 
 
 

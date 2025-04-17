@@ -23,36 +23,60 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirm) {
-      alert('Las contraseñas no coinciden');
+      setMessage('Las contraseñas no coinciden');
+      setMessageType('error');
       return;
     }
 
     try {
-      const result = await registerUser({
-        username, email, password,
+      await registerUser({
+        username,
+        email,
+        password,
         userName: username,
       });
-      alert('Usuario registrado con éxito');
-      console.log(result);
+
+      setMessage('Usuario registrado con éxito');
+      setMessageType('success');
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
     } catch (error: any) {
-      alert(error.message);
+      setMessage(error.message || 'Error al registrarse');
+      setMessageType('error');
     }
   };
-  
+
+
   return (
     <AuthLayout>
+      {message && (
+        <div
+          className={`mb-4 text-center px-4 py-2 rounded-lg font-medium transition ${messageType === 'success'
+              ? 'bg-green-100 text-green-800'
+              : 'bg-red-100 text-red-800'
+            }`}
+        >
+          {message}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit}>
         <AuthFormTitle
           title="Crear Cuenta"
           subtitle="Por favor, complete los siguientes campos para registrarse"
         />
-  
+
         <Input
           label="Nombre de usuario"
           type="text"
@@ -61,7 +85,7 @@ const RegisterPage = () => {
           required
           icon={<UserIcon className="w-5 h-5 text-[#005DB3]" />}
         />
-  
+
         <Input
           label="Correo electrónico"
           type="email"
@@ -70,7 +94,7 @@ const RegisterPage = () => {
           required
           icon={<MailIcon className="w-5 h-5 text-[#005DB3]" />}
         />
-  
+
         <Input
           label="Contraseña"
           type={showPassword ? 'text' : 'password'}
@@ -87,7 +111,7 @@ const RegisterPage = () => {
           }
           onRightIconClick={() => setShowPassword((prev) => !prev)}
         />
-  
+
         <Input
           label="Confirmar contraseña"
           type={showConfirm ? 'text' : 'password'}
@@ -104,9 +128,9 @@ const RegisterPage = () => {
           }
           onRightIconClick={() => setShowConfirm((prev) => !prev)}
         />
-  
+
         <Button type="submit">Registrarse</Button>
-  
+
         <p className="text-sm text-center mt-4">
           ¿Ya tienes una cuenta?{' '}
           <Link to="/login" className="underline text-white font-semibold">

@@ -18,6 +18,9 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -29,16 +32,34 @@ const LoginPage = () => {
             localStorage.setItem('token', token);
             localStorage.setItem('role', role);
 
-            alert('Inicio de sesión exitoso');
-            navigate('/shipments');
-        } catch (error: any) {
-            alert(error.message);
-        }
-    };
+            setMessage('Inicio de sesión exitoso');
+            setMessageType('success');
 
+            setTimeout(() => {
+                navigate('/shipments');
+            }, 1000);
+        } catch (error: any) {
+            setMessage(error.message || 'Error al iniciar sesión');
+            setMessageType('error');
+        }
+
+    };
 
     return (
         <AuthLayout>
+            {
+                message && (
+                    <div
+                        className={`mb-4 text-center px-4 py-2 rounded-lg font-medium transition ${messageType === 'success'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
+                    >
+                        {message}
+                    </div>
+                )
+            }
+
             <form onSubmit={handleSubmit}>
                 <AuthFormTitle
                     title="Iniciar Sesión"

@@ -30,7 +30,7 @@ const LoginPage = () => {
             localStorage.setItem('role', role);
 
             alert('Inicio de sesión exitoso');
-            navigate('/users/profile');
+            navigate('/shipments/create');
         } catch (error: any) {
             alert(error.message);
         }

@@ -4,6 +4,8 @@ import RegisterPage from './features/auth/pages/RegisterPage';
 import ProfilePage from './features/user/pages/ProfilePage';
 import PrivateRoute from './routes/PrivateRoute';
 import CreateShipmentPage from './features/shipments/pages/CreateShipmentPage';
+import ShipmentsListPage from './features/shipments/pages/ShipmentsListPage';
+
 
 function App() {
   return (
@@ -25,6 +27,14 @@ function App() {
           element={
             <PrivateRoute>
               <CreateShipmentPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shipments"
+          element={
+            <PrivateRoute>
+              <ShipmentsListPage />
             </PrivateRoute>
           }
         />

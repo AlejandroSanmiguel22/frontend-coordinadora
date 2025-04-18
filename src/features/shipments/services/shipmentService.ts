@@ -100,5 +100,24 @@ export const getShipmentHistory = async (id: number) => {
   return data;
 };
 
+export const updateShipmentStatus = async (shipmentId: number, estado: 'En espera' | 'En tránsito' | 'Entregado') => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Usuario no autenticado');
+
+  const res = await fetch(`http://localhost:3000/api/shipments/${shipmentId}/status`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ estado }),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Error al actualizar estado');
+  return data;
+};
+
+
 
 

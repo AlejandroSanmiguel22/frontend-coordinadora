@@ -18,7 +18,7 @@ const ShipmentTimeline = ({ currentStatus }: Props) => {
     return (
         <div className="w-full px-8 py-8 bg-white rounded-xl shadow-md mx-auto">
             <div className="flex justify-between items-center relative max-w-4xl mx-auto">
-                {/* Línea base gris - ahora correctamente posicionada entre íconos */}
+                {/* Línea base gris */}
                 <div
                     className="absolute top-6 h-0.5 bg-gray-200 z-0"
                     style={{
@@ -27,13 +27,13 @@ const ShipmentTimeline = ({ currentStatus }: Props) => {
                     }}
                 ></div>
 
-                {/* Línea azul de progreso - CORRECCIÓN APLICADA AQUÍ */}
+                {/* Línea azul de progreso */}
                 <div
                     className="absolute top-6 h-0.5 bg-[#0057C8] z-0 transition-all duration-500"
                     style={{
                         left: 'calc(50% / 3)',
                         width: statusIndex === steps.length - 1
-                            ? 'calc(100% - (50% / 3 * 2))'  // Llega hasta el final cuando es "Entregado"
+                            ? 'calc(100% - (50% / 3 * 2))'
                             : `${(statusIndex / (steps.length - 1)) * 100}%`,
                     }}
                 ></div>
@@ -51,10 +51,11 @@ const ShipmentTimeline = ({ currentStatus }: Props) => {
                                     ${isActive ? 'bg-[#0057C8] border-[#0057C8]' :
                                         isCompleted ? 'bg-white border-[#0057C8]' : 'bg-white border-gray-300'}`}
                             >
-                                <Icon
-                                    className={`w-6 h-6 transition-all duration-300 
-                                        ${isActive ? 'text-white' : isCompleted ? 'text-[#0057C8]' : 'text-gray-400'}`}
-                                />
+                                <div className={`transition-all duration-300 
+                                    ${isActive ? 'text-white' :
+                                        isCompleted ? 'text-[#0057C8]' : 'text-gray-400'}`}>
+                                    <Icon className="w-6 h-6" />
+                                </div>
                             </div>
 
                             {/* Texto */}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AuthLayout from '../../auth/components/AuthLayout';
 import ShipmentFormTitle from '../components/ShipmentFormTitle';
-import { getAllShipments } from '../services/shipmentService';
+import { getAllShipments, updateShipmentStatus } from '../services/shipmentService';
 import { Link, useNavigate } from 'react-router-dom';
 import ShipmentLayout from '../components/ShipmentLayout';
 
@@ -101,7 +101,7 @@ const AdminDashboardPage = () => {
                   <td className="px-4 py-2">{shipment.tipoProducto}</td>
                   <td className="px-4 py-2">{shipment.direccion}</td>
                   <td className="px-4 py-2">{shipment.estado}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 flex flex-col gap-1">
                     {shipment.estado === 'En espera' && (
                       <Link
                         to={`/shipments/${shipment.id}/assign`}
@@ -110,7 +110,30 @@ const AdminDashboardPage = () => {
                         Asignar ruta
                       </Link>
                     )}
+
+                    {shipment.estado === 'En tránsito' && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            await updateShipmentStatus(shipment.id, 'Entregado');
+                            const updated = await getAllShipments();
+                            setShipments(updated);
+                          } catch (error) {
+                            alert('Error al actualizar a entregado');
+                          }
+                        }}
+                        className="underline hover:text-green-300"
+                      >
+                        Marcar como entregado
+                      </button>
+                    )}
+
+                    {shipment.estado === 'Entregado' && (
+                      <span className="italic text-gray-200">Envío finalizado</span>
+                    )}
                   </td>
+
+
                 </tr>
               ))}
             </tbody>

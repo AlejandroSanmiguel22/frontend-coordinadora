@@ -5,6 +5,8 @@ import ProfilePage from './features/user/pages/ProfilePage';
 import PrivateRoute from './routes/PrivateRoute';
 import CreateShipmentPage from './features/shipments/pages/CreateShipmentPage';
 import ShipmentsListPage from './features/shipments/pages/ShipmentsListPage';
+import AdminDashboardPage from './features/shipments/pages/AdminDashboardPage';
+
 
 
 function App() {
@@ -38,7 +40,16 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <PrivateRoute>
+              <AdminDashboardPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
+
     </BrowserRouter>
   );
 }

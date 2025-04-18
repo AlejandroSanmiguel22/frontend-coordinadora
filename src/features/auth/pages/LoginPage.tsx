@@ -36,8 +36,13 @@ const LoginPage = () => {
             setMessageType('success');
 
             setTimeout(() => {
-                navigate('/shipments');
+                if (role === 'admin') {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/shipments');
+                }
             }, 1000);
+
         } catch (error: any) {
             setMessage(error.message || 'Error al iniciar sesión');
             setMessageType('error');

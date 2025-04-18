@@ -70,4 +70,35 @@ export const getAllShipments = async () => {
   return data;
 };
 
+export const getShipmentStatus = async (id: number) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Usuario no autenticado');
+
+  const response = await fetch(`http://localhost:3000/api/shipments/${id}/status`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Error al obtener estado del envío');
+  return data;
+};
+
+export const getShipmentHistory = async (id: number) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Usuario no autenticado');
+
+  const response = await fetch(`http://localhost:3000/api/shipments/${id}/history`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Error al obtener historial');
+  return data;
+};
+
+
 

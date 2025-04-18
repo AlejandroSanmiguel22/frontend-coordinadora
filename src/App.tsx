@@ -7,6 +7,7 @@ import CreateShipmentPage from './features/shipments/pages/CreateShipmentPage';
 import ShipmentsListPage from './features/shipments/pages/ShipmentsListPage';
 import AdminDashboardPage from './features/shipments/pages/AdminDashboardPage';
 import AssignShipmentPage from './features/shipments/pages/AssignShipmentPage';
+import TrackShipmentPage from './features/shipments/pages/TrackShipmentPage';
 
 
 
@@ -57,10 +58,17 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/shipments/:id/track"
+          element={
+            <PrivateRoute>
+              <TrackShipmentPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
 
     </BrowserRouter>
   );
-}
-
+} 
 export default App;

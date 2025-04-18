@@ -6,6 +6,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import CreateShipmentPage from './features/shipments/pages/CreateShipmentPage';
 import ShipmentsListPage from './features/shipments/pages/ShipmentsListPage';
 import AdminDashboardPage from './features/shipments/pages/AdminDashboardPage';
+import AssignShipmentPage from './features/shipments/pages/AssignShipmentPage';
 
 
 
@@ -45,6 +46,14 @@ function App() {
           element={
             <PrivateRoute>
               <AdminDashboardPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/shipments/:id/assign"
+          element={
+            <PrivateRoute>
+              <AssignShipmentPage />
             </PrivateRoute>
           }
         />

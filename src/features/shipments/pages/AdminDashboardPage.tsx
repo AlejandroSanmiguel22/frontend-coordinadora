@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import AuthLayout from '../../auth/components/AuthLayout';
 import ShipmentFormTitle from '../components/ShipmentFormTitle';
-import { getMyShipments } from '../services/shipmentService';
-import { Link } from 'react-router-dom';
-import logo from '../../../assets/logo.png';
+import { getAllShipments } from '../services/shipmentService';
+import { Link, useNavigate } from 'react-router-dom';
 import ShipmentLayout from '../components/ShipmentLayout';
-import { useNavigate } from 'react-router-dom';
 
 interface Shipment {
   id: number;
@@ -15,10 +13,13 @@ interface Shipment {
   direccion: string;
   estado: string;
   createdAt: string;
+  routeId?: number;
 }
 
-const ShipmentsListPage = () => {
+const AdminDashboardPage = () => {
   const [shipments, setShipments] = useState<Shipment[]>([]);
+  const [filtered, setFiltered] = useState<Shipment[]>([]);
+  const [filter, setFilter] = useState('Todos');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -28,17 +29,26 @@ const ShipmentsListPage = () => {
   };
 
   useEffect(() => {
-    const fetchShipments = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getMyShipments();
+        const data = await getAllShipments();
         setShipments(data);
+        setFiltered(data);
       } catch (error) {
-        alert('Error al cargar los envíos');
+        alert('Error al cargar envíos');
       }
     };
 
-    fetchShipments();
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    if (filter === 'Todos') {
+      setFiltered(shipments);
+    } else {
+      setFiltered(shipments.filter((s) => s.estado === filter));
+    }
+  }, [filter, shipments]);
 
   return (
     <ShipmentLayout>
@@ -48,56 +58,67 @@ const ShipmentsListPage = () => {
       >
         Cerrar sesión
       </button>
-
-      <div className="w-full max-w-6xl mx-auto px-1 flex flex-col gap-6 pt-12">
+      <div className="w-full max-w-6xl mx-auto flex flex-col gap-6">
         <ShipmentFormTitle
-          title="Mis envíos"
-          subtitle="Consulta el historial de tus órdenes registradas"
+          title="Dashboard Administrativo"
+          subtitle="Gestiona y asigna rutas a los envíos"
         />
+
+        <div className="flex justify-center gap-4">
+          {['Todos', 'En espera', 'En tránsito', 'Entregado'].map((estado) => (
+            <button
+              key={estado}
+              onClick={() => setFilter(estado)}
+              className={`px-4 py-2 border rounded-lg ${filter === estado
+                ? 'bg-white text-[#0057C8]'
+                : 'border-white text-white hover:bg-white hover:text-[#0057C8]'
+                }`}
+            >
+              {estado}
+            </button>
+          ))}
+        </div>
 
         <div className="overflow-x-auto rounded-lg border border-white">
           <table className="min-w-full text-white text-sm">
             <thead className="bg-[#0057C8] text-white">
               <tr>
+                <th className="px-4 py-2 text-left">ID</th>
                 <th className="px-4 py-2 text-left">Peso</th>
                 <th className="px-4 py-2 text-left">Dimensiones</th>
-                <th className="px-4 py-2 text-left">Tipo</th>
+                <th className="px-4 py-2 text-left">Producto</th>
                 <th className="px-4 py-2 text-left">Dirección</th>
                 <th className="px-4 py-2 text-left">Estado</th>
-                <th className="px-4 py-2 text-left">Fecha</th>
+                <th className="px-4 py-2 text-left">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-[#0057C8]">
-              {shipments.map((shipment) => (
+              {filtered.map((shipment) => (
                 <tr key={shipment.id} className="border-t border-white">
+                  <td className="px-4 py-2">{shipment.id}</td>
                   <td className="px-4 py-2">{shipment.peso} kg</td>
                   <td className="px-4 py-2">{shipment.dimensiones}</td>
                   <td className="px-4 py-2">{shipment.tipoProducto}</td>
                   <td className="px-4 py-2">{shipment.direccion}</td>
                   <td className="px-4 py-2">{shipment.estado}</td>
-                  <td className="px-4 py-2">{new Date(shipment.createdAt).toLocaleDateString()}</td>
+                  <td className="px-4 py-2">
+                    {shipment.estado === 'En espera' && (
+                      <Link
+                        to={`/shipments/${shipment.id}/assign`}
+                        className="underline hover:text-blue-300"
+                      >
+                        Asignar ruta
+                      </Link>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-
-        <div className="text-center mt-6">
-          <Link
-            to="/shipments/create"
-            className="inline-block px-6 py-2 border border-white text-white rounded-lg hover:bg-white hover:text-[#0057C8] transition"
-          >
-            Crear nuevo envío
-          </Link>
-        </div>
-      </div>
-      <div className="absolute -bottom-40 left-1/2 transform -translate-x-1/2 w-full">
-        <div className="bg-white w-48 h-28 rounded-t-full flex justify-center items-end pb-3 shadow-md mx-auto">
-          <img src={logo} alt="Logo Coordinadora" className="w-45 translate-x-[-10px]" />
         </div>
       </div>
     </ShipmentLayout>
   );
 };
 
-export default ShipmentsListPage;
+export default AdminDashboardPage;

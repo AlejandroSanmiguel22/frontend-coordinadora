@@ -50,3 +50,24 @@ export const getMyShipments = async () => {
   return data;
 };
 
+export const getAllShipments = async () => {
+  const token = localStorage.getItem('token');
+
+  if (!token) throw new Error('Usuario no autenticado');
+
+  const response = await fetch('http://localhost:3000/api/shipments', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Error al obtener todos los envíos');
+  }
+
+  return data;
+};
+
+

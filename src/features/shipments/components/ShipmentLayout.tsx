@@ -10,15 +10,18 @@ interface ShipmentLayoutProps {
 
 const ShipmentLayout = ({ children }: ShipmentLayoutProps) => (
   <div className="relative min-h-screen bg-[#0057C8] overflow-hidden">
-    {/* Elementos decorativos */}
-    <img src={rightSvg} alt="decoración derecha inferior" className="absolute bottom-0 right-0 w-[300px] sm:w-[400px] lg:w-[600px]" />
+    <img
+      src={rightSvg}
+      alt="decoración derecha inferior"
+      className="absolute bottom-0 right-0 w-[300px] sm:w-[400px] lg:w-[600px]"
+    />
 
-    {/* Logo en la parte inferior derecha */}
-    <div className="absolute bottom-4 right-4 w-70">
+    <div className="absolute bottom-3 right-1 w-[140px] sm:w-[200px] md:w-[290px] lg:w-[300px] xl:w-[360px]">
       <img src={logo} alt="Logo Coordinadora" className="w-full" />
     </div>
 
-    <div className="relative z-10 min-h-[calc(100vh-100px)] mx-auto max-w-6xl rounded-lg mt-8 mb-16 p-6 text-white ">
+
+    <div className="relative z-10 min-h-[calc(100vh-100px)] mx-auto max-w-6xl rounded-lg mt-8 mb-16 p-6 text-white">
       {children}
     </div>
   </div>

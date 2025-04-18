@@ -57,7 +57,7 @@ const ShipmentsListPage = () => {
 
         <div className="overflow-x-auto rounded-lg border border-white">
           <table className="min-w-full text-white text-sm">
-            <thead className="bg-[#0057C8] text-white">
+            <thead>
               <tr>
                 <th className="px-4 py-2 text-left">Peso</th>
                 <th className="px-4 py-2 text-left">Dimensiones</th>
@@ -65,9 +65,10 @@ const ShipmentsListPage = () => {
                 <th className="px-4 py-2 text-left">Dirección</th>
                 <th className="px-4 py-2 text-left">Estado</th>
                 <th className="px-4 py-2 text-left">Fecha</th>
+                <th className="px-4 py-2 text-left">Seguimiento</th>
               </tr>
             </thead>
-            <tbody className="bg-[#0057C8]">
+            <tbody>
               {shipments.map((shipment) => (
                 <tr key={shipment.id} className="border-t border-white">
                   <td className="px-4 py-2">{shipment.peso} kg</td>
@@ -76,12 +77,16 @@ const ShipmentsListPage = () => {
                   <td className="px-4 py-2">{shipment.direccion}</td>
                   <td className="px-4 py-2">{shipment.estado}</td>
                   <td className="px-4 py-2">{new Date(shipment.createdAt).toLocaleDateString()}</td>
+                  <td className="px-4 py-2">
+                    <Link to={`/shipments/${shipment.id}/track`} className="underline hover:text-blue-300">
+                      Ver estado
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
         <div className="text-center mt-6">
           <Link
             to="/shipments/create"

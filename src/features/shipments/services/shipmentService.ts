@@ -118,6 +118,42 @@ export const updateShipmentStatus = async (shipmentId: number, estado: 'En esper
   return data;
 };
 
+interface ReportFilters {
+  fechaDesde?: string;
+  fechaHasta?: string;
+  estado?: string;
+  transportistaId?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export const getReport = async (filters: ReportFilters = {}) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Usuario no autenticado');
+
+  const query = new URLSearchParams();
+
+  if (filters.fechaDesde) query.append('fechaDesde', filters.fechaDesde);
+  if (filters.fechaHasta) query.append('fechaHasta', filters.fechaHasta);
+  if (filters.estado) query.append('estado', filters.estado);
+  if (filters.transportistaId !== undefined) query.append('transportistaId', String(filters.transportistaId));
+  if (filters.page) query.append('page', String(filters.page));
+  if (filters.pageSize) query.append('pageSize', String(filters.pageSize));
+
+  const response = await fetch(`http://localhost:3000/api/shipments/report?${query.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Error al obtener reporte');
+  }
+
+  return data;
+};
 
 
 

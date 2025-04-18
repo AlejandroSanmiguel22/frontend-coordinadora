@@ -8,6 +8,7 @@ import ShipmentsListPage from './features/shipments/pages/ShipmentsListPage';
 import AdminDashboardPage from './features/shipments/pages/AdminDashboardPage';
 import AssignShipmentPage from './features/shipments/pages/AssignShipmentPage';
 import TrackShipmentPage from './features/shipments/pages/TrackShipmentPage';
+import AdminReportPage from './features/shipments/pages/AdminReportPage';
 
 
 
@@ -66,9 +67,19 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/admin/report"
+          element={
+            <PrivateRoute>
+              <AdminReportPage />
+            </PrivateRoute>
+          }
+        />
+
       </Routes>
 
     </BrowserRouter>
   );
-} 
+}
 export default App;

@@ -3,6 +3,14 @@ interface Props {
 }
 
 const ReportTable = ({ shipments }: Props) => {
+    if (shipments.length === 0) {
+      return (
+        <div className="overflow-x-auto rounded border border-white p-4 text-center">
+          No hay envíos para mostrar
+        </div>
+      );
+    }
+    
     return (
         <div className="overflow-x-auto rounded border border-white">
             <table className="min-w-full text-white text-sm">

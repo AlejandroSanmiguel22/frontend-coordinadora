@@ -1,46 +1,110 @@
-# Getting Started with Create React App
+# Coordinadora - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto esta construida con **React**, **TypeScript**, **TailwindCSS** y **Redux**, que consume los servicios del backend para gestionar el flujo logístico de Coordinadora. Implementa arquitectura por funcionalidades, autenticación con **JWT**, pruebas con **React Testing Library** y soporte para usuarios con rol `user` y `admin`.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Arquitectura
 
-### `npm start`
+Se sigue una arquitectura modular por funcionalidades, con énfasis en **separación de responsabilidades** y escalabilidad:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+src/
+├── features/
+│   ├── auth/                  # Login y registro
+│   ├── user/                  # Perfil de usuario
+│   └── shipments/             # Gestión de envíos (crear, listar, asignar, reportes)
+│       ├── components/        # Componentes UI reutilizables
+│       ├── pages/             # Páginas principales (admin, crear envío, etc.)
+│       └── services/          # Llamadas a la API
+├── routes/                    # Rutas protegidas y públicas
+├── shared/                    # Componentes reutilizables (botones, inputs)
+├── assets/                    # Imágenes y SVG
+├── App.tsx                    # Definición de rutas
+└── main.tsx                   # Punto de entrada
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## Pruebas
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Se han implementado pruebas unitarias para los componentes clave con **Jest** y **React Testing Library**:
 
-### `npm run build`
+```bash
+npm run test
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Componentes cubiertos:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `ReportChart`
+- `ReportTable`
+- `ReportFilters`
+- `ShipmentForm`
+- `ShipmentFormTitle`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Seguridad
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Manejo de autenticación con JWT
+- Validación de rol en frontend (`admin` vs `user`)
+- Rutas protegidas con `PrivateRoute`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Características
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Login y registro de usuarios
+- Crear nuevos envíos
+- Ver historial de envíos
+- Consultar estado en tiempo real mediante **polling**
+- Panel administrativo:
+  - Visualización y asignación de rutas
+  - Marcar entregas
+  - Dashboard con filtros avanzados y gráficos
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Instalación
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tuusuario/coordinadora-frontend.git
+cd coordinadora-frontend
+```
+
+### 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3. Configurar entorno
+
+Asegúrate de que el backend esté corriendo en `http://localhost:3000`.
+El frontend se iniciará por defecto en `http://localhost:3000`, pero si ese puerto está ocupado (por ejemplo, por el backend), **se moverá automáticamente a `http://localhost:3001`**.
+
+### 4. Iniciar aplicación
+
+```bash
+npm run dev
+```
+
+---
+
+## Tecnologías usadas
+
+- React + TypeScript
+- TailwindCSS
+- Redux (para manejo global de estado)
+- React Router DOM
+- React Testing Library + Jest
+- Webpack / Vite
+
+---
+
+## Autor
+
+**Luis Alejandro Sanmiguel Galeano**  
+Desarrollador Fullstack apasionado por construir interfaces funcionales, accesibles y conectadas a arquitecturas limpias.

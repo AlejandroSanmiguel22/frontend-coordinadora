@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import AuthLayout from '../../auth/components/AuthLayout';
 import ShipmentFormTitle from '../components/ShipmentFormTitle';
-import { getAllShipments } from '../services/shipmentService';
+import { getAllShipments, updateShipmentStatus } from '../services/shipmentService';
 import { Link, useNavigate } from 'react-router-dom';
 import ShipmentLayout from '../components/ShipmentLayout';
 
@@ -58,25 +57,35 @@ const AdminDashboardPage = () => {
       >
         Cerrar sesión
       </button>
+
       <div className="w-full max-w-6xl mx-auto flex flex-col gap-6">
         <ShipmentFormTitle
           title="Dashboard Administrativo"
           subtitle="Gestiona y asigna rutas a los envíos"
         />
 
-        <div className="flex justify-center gap-4">
-          {['Todos', 'En espera', 'En tránsito', 'Entregado'].map((estado) => (
-            <button
-              key={estado}
-              onClick={() => setFilter(estado)}
-              className={`px-4 py-2 border rounded-lg ${filter === estado
-                ? 'bg-white text-[#0057C8]'
-                : 'border-white text-white hover:bg-white hover:text-[#0057C8]'
+        <div className="flex flex-wrap justify-between items-center gap-4">
+          <div className="flex flex-wrap gap-2">
+            {['Todos', 'En espera', 'En tránsito', 'Entregado'].map((estado) => (
+              <button
+                key={estado}
+                onClick={() => setFilter(estado)}
+                className={`px-4 py-2 border rounded-lg ${
+                  filter === estado
+                    ? 'bg-white text-[#0057C8]'
+                    : 'border-white text-white hover:bg-white hover:text-[#0057C8]'
                 }`}
-            >
-              {estado}
-            </button>
-          ))}
+              >
+                {estado}
+              </button>
+            ))}
+          </div>
+          <button
+            onClick={() => navigate('/admin/report')}
+            className="px-4 py-2 border border-white text-white rounded-lg hover:bg-white hover:text-[#0057C8] transition"
+          >
+            Ver reporte logístico
+          </button>
         </div>
 
         <div className="overflow-x-auto rounded-lg border border-white">
@@ -101,7 +110,7 @@ const AdminDashboardPage = () => {
                   <td className="px-4 py-2">{shipment.tipoProducto}</td>
                   <td className="px-4 py-2">{shipment.direccion}</td>
                   <td className="px-4 py-2">{shipment.estado}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 flex flex-col gap-1">
                     {shipment.estado === 'En espera' && (
                       <Link
                         to={`/shipments/${shipment.id}/assign`}
@@ -109,6 +118,27 @@ const AdminDashboardPage = () => {
                       >
                         Asignar ruta
                       </Link>
+                    )}
+
+                    {shipment.estado === 'En tránsito' && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            await updateShipmentStatus(shipment.id, 'Entregado');
+                            const updated = await getAllShipments();
+                            setShipments(updated);
+                          } catch (error) {
+                            alert('Error al actualizar a entregado');
+                          }
+                        }}
+                        className="underline hover:text-green-300"
+                      >
+                        Marcar como entregado
+                      </button>
+                    )}
+
+                    {shipment.estado === 'Entregado' && (
+                      <span className="italic text-gray-200">Envío finalizado</span>
                     )}
                   </td>
                 </tr>

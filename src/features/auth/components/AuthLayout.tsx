@@ -13,7 +13,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => (
     <img src={leftSvg} alt="decoración izquierda inferior" className="absolute bottom-0 left-0 w-[200px] sm:w-[200px] lg:w-[400px]" />
     <img src={topSvg} alt="decoración superior izquierda" className="absolute top-0 left-0 w-[300px] hidden sm:block" />
     <img src={rightSvg} alt="decoración derecha inferior" className="absolute bottom-0 right-0 w-[300px] sm:w-[400px] lg:w-[600px]" />
-    <img src={logo} alt="Logo Coordinadora" className="absolute bottom-1 right-4 w-70" />
+    <div className="absolute bottom-1 right-1 w-[140px] sm:w-[200px] md:w-[290px] lg:w-[300px] xl:w-[360px]">
+      <img src={logo} alt="Logo Coordinadora" className="w-full" />
+    </div>
     <div className="relative z-10 w-full max-w-sm px-6 py-8 text-white bg-transparent">
       {children}
     </div>

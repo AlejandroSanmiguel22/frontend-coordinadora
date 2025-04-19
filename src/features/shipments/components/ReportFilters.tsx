@@ -21,8 +21,11 @@ const ReportFilters = ({ onFilter }: Props) => {
         <div className="bg-[#0057C8] text-white p-4 rounded-lg flex flex-col gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                    <label className="block mb-1">Fecha desde</label>
+                    <label htmlFor="fecha-desde" className="block mb-1">
+                        Fecha desde
+                    </label>
                     <input
+                        id="fecha-desde"
                         type="date"
                         value={fechaDesde}
                         onChange={(e) => setFechaDesde(e.target.value)}
@@ -30,8 +33,11 @@ const ReportFilters = ({ onFilter }: Props) => {
                     />
                 </div>
                 <div>
-                    <label className="block mb-1">Fecha hasta</label>
+                    <label htmlFor="fecha-hasta" className="block mb-1">
+                        Fecha hasta
+                    </label>
                     <input
+                        id="fecha-hasta"
                         type="date"
                         value={fechaHasta}
                         onChange={(e) => setFechaHasta(e.target.value)}
@@ -39,8 +45,11 @@ const ReportFilters = ({ onFilter }: Props) => {
                     />
                 </div>
                 <div>
-                    <label className="block mb-1">Estado</label>
+                    <label htmlFor="estado-filtro" className="block mb-1">
+                        Estado
+                    </label>
                     <select
+                        id="estado-filtro"
                         value={estado}
                         onChange={(e) => setEstado(e.target.value)}
                         className="text-black w-full px-2 py-1 rounded"
@@ -53,8 +62,11 @@ const ReportFilters = ({ onFilter }: Props) => {
                     </select>
                 </div>
                 <div>
-                    <label className="block mb-1">Transportista (ID)</label>
+                    <label htmlFor="transportista-id" className="block mb-1">
+                        Transportista (ID)
+                    </label>
                     <input
+                        id="transportista-id"
                         type="number"
                         value={transportistaId}
                         onChange={(e) => setTransportistaId(e.target.value)}
